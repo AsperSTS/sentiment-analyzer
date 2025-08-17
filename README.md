@@ -1,128 +1,167 @@
-# Sistema de Análisis de Sentimientos y Aumentación de Datos
+# Sentiment Analysis and Data Augmentation System
 
-Este proyecto combina un sistema de aumentación de datos mediante traducción multi-ruta con un analizador de sentimientos que utiliza embeddings de RoBERTa y múltiples clasificadores.
+This project combines a multi-route translation data augmentation system with a sentiment analyzer that utilizes RoBERTa embeddings and multiple classifiers for comprehensive emotion detection.
 
-## Pipeline del Sistema
+## System Pipeline
+
 ```mermaid
 graph TD
-    A[Texto Original] --> B[Aumentación Multi-Ruta]
-    B --> C[Traducción]
+    A[Original Text] --> B[Multi-Route Augmentation]
+    B --> C[Translation]
     C --> D[Back-Translation]
-    D --> E[Texto Aumentado]
+    D --> E[Augmented Text]
     
-    E --> F[Preprocesamiento]
-    F --> G[Embeddings RoBERTa]
-    G --> H[Clasificación]
+    E --> F[Preprocessing]
+    F --> G[RoBERTa Embeddings]
+    G --> H[Classification]
     H --> I[SVM]
     H --> J[Naive Bayes]
     H --> K[KNN]
-    I --> L[Predicción]
+    I --> L[Prediction]
     J --> L
     K --> L
 ```
 
-## Características
+## Features
 
-### Aumentación de Datos
-- Traducción bidireccional a través de múltiples rutas lingüísticas
-- Procesamiento por lotes
+### Data Augmentation
+- Bidirectional translation through multiple linguistic routes
+- Batch processing for efficiency
+- Multi-language back-translation pipeline
 
-### Análisis de Sentimientos
-- Embeddings contextuales de `PlanTL-GOB-ES/roberta-base-bne`
-- Clasificadores múltiples:
-  - SVM (parámetros optimizados: C=7.21, gamma=0.6069, kernel=rbf)
-  - Naive Bayes Gaussiano
-  - KNN (n_neighbors=6)
-- Balanceo de datos con SMOTE
-- Validación cruzada 
-- Búsqueda aleatoria de hiperparámetros
+### Sentiment Analysis
+- Contextual embeddings from `PlanTL-GOB-ES/roberta-base-bne`
+- Multiple classifier ensemble:
+  - **SVM** (optimized parameters: C=7.21, gamma=0.6069, kernel=rbf)
+  - **Gaussian Naive Bayes**
+  - **KNN** (n_neighbors=6)
+- Data balancing with SMOTE technique
+- Cross-validation for robust evaluation
+- Random search hyperparameter optimization
 
-### Procesamiento de Texto
-- Limpieza y normalización avanzada
-- Lematización con spaCy (es_core_news_sm)
-- Eliminación de stopwords específicas del español
-- Manejo de caracteres especiales y acentos
-- Tokenización mediante RoBERTa
+### Text Processing
+- Advanced cleaning and normalization
+- Lemmatization using spaCy (es_core_news_sm)
+- Spanish-specific stopword removal
+- Special character and accent handling
+- RoBERTa-based tokenization
 
-### Evaluación y Métricas
-- Validación cruzada con 5 folds
-- Matrices de confusión
-- Reportes de clasificación detallados
-- Métricas por modelo
-- Tiempos de ejecución
-- Visualizaciones interactivas
+### Evaluation and Metrics
+- 5-fold cross-validation
+- Confusion matrices
+- Detailed classification reports
+- Per-model performance metrics
+- Execution time tracking
+- Interactive visualizations
 
-### Clasificación de Sentimientos
-- Alegría (preguntas 1, 6)
-- Tristeza (pregunta 2)
-- Estrés (preguntas 3, 9)
-- Inquietud (preguntas 4, 5)
-- Miedo (preguntas 7, 10)
-- Enojo (pregunta 8)
+### Sentiment Categories
+- **Joy** (questions 1, 6)
+- **Sadness** (question 2)
+- **Stress** (questions 3, 9)
+- **Anxiety** (questions 4, 5)
+- **Fear** (questions 7, 10)
+- **Anger** (question 8)
 
-## Instalación
+## Installation
 
-### 1. Clonar el Repositorio
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/AsperSTS/simple_sentiment_analyzer_model.git
 cd simple_sentiment_analyzer_model
 ```
 
-### 2. Configurar el Entorno
+### 2. Environment Setup
 
-#### Usando Anaconda
+#### Using Anaconda (Recommended)
 ```bash
-# Crear el entorno desde el archivo environment.yml
+# Create environment from environment.yml
 conda env create -f environment.yml
 
-# Activar el entorno
+# Activate the environment
 conda activate sentiment_analyzer_env
 ```
 
-#### O usando pip
+#### Using pip
 ```bash
-# Instalar dependencias
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### 3. Instalar Recursos Lingüísticos
+### 3. Install Language Resources
 ```bash
 python -m spacy download es_core_news_sm
 ```
 
-## Uso
+## Usage
 
-### Aumentación de Datos
-- Primero asegurarse de tener el csv normalizado y en utf8
+### Data Augmentation
+First, ensure you have the normalized CSV file in UTF-8 encoding:
 
-```python
- python back_translation.py
+```bash
+python back_translation.py
 ```
 
-### Análisis de Sentimientos
-- Primero asegurarse de tener el csv con las columnas normalizadas
-```python
+### Sentiment Analysis
+Make sure your CSV has normalized columns:
+
+```bash
 python sentiment_analyzer.py
 ```
 
-### Interfaz grafica
-- Asegurarse de tener las dependencias necesarias  
-```python
+### Graphical Interface
+Ensure all necessary dependencies are installed:
+
+```bash
 streamlit run use_model_gui.py
 ```
 
-## Estructura del Proyecto
+## Project Structure
+
 ```
-proyecto/
-├── experiments/          # Directorio de experimentos
-├── best_models/         # Modelos guardados
-├── utils.py            # Utilidades y funciones auxiliares
-├── requirements.txt    # Dependencias del proyecto
-└── README.md          # Documentación
+project/
+├── experiments/          # Experiment directory
+├── best_models/         # Saved trained models
+├── utils.py            # Utility functions and helpers
+├── back_translation.py # Data augmentation module
+├── sentiment_analyzer.py # Main analysis pipeline
+├── use_model_gui.py    # Streamlit GUI interface
+├── requirements.txt    # Project dependencies
+├── environment.yml     # Conda environment file
+└── README.md          # Project documentation
 ```
 
-## Requisitos del Sistema
-- Python 3.11+
-- 8GB RAM mínimo
-- Espacio en disco 
+## System Requirements
 
+- **Python**: 3.11+
+- **RAM**: Minimum 8GB (16GB recommended for large datasets)
+- **Storage**: 2GB+ free disk space
+- **GPU**: Optional but recommended for faster processing
+
+## Technical Details
+
+### Model Architecture
+- **Base Model**: Spanish RoBERTa from PlanTL-GOB-ES
+- **Feature Extraction**: 768-dimensional embeddings
+- **Classification**: Ensemble of three complementary algorithms
+- **Data Balancing**: SMOTE for handling class imbalance
+
+### Performance Optimization
+- Batch processing for translation tasks
+- Vectorized operations using NumPy and scikit-learn
+- Memory-efficient data handling
+- Parallel processing where applicable
+
+### Data Pipeline
+1. **Input Validation**: CSV format and encoding verification
+2. **Text Preprocessing**: Cleaning, normalization, and tokenization
+3. **Feature Extraction**: RoBERTa embedding generation
+4. **Model Training**: Cross-validated training with hyperparameter tuning
+5. **Evaluation**: Comprehensive metric calculation and visualization
+
+## Contributing
+
+This project is designed for research and educational purposes in natural language processing and sentiment analysis for Spanish text.
+
+---
+
+*NLP Research Project - Spanish Sentiment Analysis System*
